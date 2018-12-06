@@ -38,8 +38,16 @@ function shuffle(array) {
  */
 
 
-
 // flipping cards
+let allCards = document.querySelectorAll('.card');
+
+function flipCard(card) {
+    card.addEventListener('click', function() {
+        card.classList.add('open', 'show');
+    });
+};
+
+allCards.forEach(flipCard);
 
 
 
