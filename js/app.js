@@ -54,8 +54,19 @@ function generateCards() {
     }
 }
 
+// card flips on click
+function flipCard() {
+    deck.addEventListener('click', function() {
+        if (event.target.classList.contains('card')) {
+            event.target.classList.toggle('open');
+            event.target.classList.toggle('show');
+        }
+    });
+}
+
 function startGame() {
     generateCards();
+    flipCard();
 }
 
 /*
@@ -69,19 +80,7 @@ function startGame() {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-
-// flipping cards
-let allCards = document.querySelectorAll('.card');
-
-function flipCard(card) {
-    card.addEventListener('click', function() {
-        card.classList.add('open', 'show');
-    });
-};
-
 startGame();
-
-allCards.forEach(flipCard);
 
 
 
