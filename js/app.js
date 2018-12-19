@@ -28,6 +28,8 @@ let cardList = [
  */
 let deck = document.getElementById('deck');
 
+let openedCards = [];
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
 	var currentIndex = array.length, temporaryValue, randomIndex;
@@ -54,14 +56,43 @@ function generateCards() {
 	}
 }
 
+function toggleClasses(cardToToggle) {
+	cardToToggle.classList.toggle('open');
+	cardToToggle.classList.toggle('show');
+}
+
 // card flips on click
 function flipCard() {
-	deck.addEventListener('click', function () {
-		if (event.target.classList.contains('card')) {
-			event.target.classList.toggle('open');
-			event.target.classList.toggle('show');
+	deck.addEventListener('click', () => {
+		let flipTarget = event.target;
+		if (flipTarget.classList.contains('card') && openedCards.length < 2 && !openedCards.includes(flipTarget)) {
+			toggleClasses(flipTarget);
+			addOpenedCards(flipTarget);
+			if (openedCards.length === 2) {
+				checkMatching();
+			}
 		}
 	});
+}
+
+function addOpenedCards(flipTarget) {
+	openedCards.push(flipTarget);
+	console.log(openedCards);
+}
+
+// matched cards stays flipped
+function checkMatching() {
+	if (openedCards[0].firstElementChild.className === openedCards[1].firstElementChild.className) {
+		openedCards[0].classList.toggle('match');
+		openedCards[1].classList.toggle('match');
+		openedCards = [];
+		console.log('matched!');
+	} else {
+		toggleClasses(openedCards[0]);
+		toggleClasses(openedCards[1]);
+		openedCards = [];
+		console.log('not matched!');	
+	}
 }
 
 function startGame() {
@@ -81,11 +112,5 @@ function startGame() {
  */
 
 startGame();
-
-
-
-// matching cards
-
-
 
 // set timer
