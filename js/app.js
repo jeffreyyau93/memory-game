@@ -46,28 +46,33 @@ function shuffle(array) {
 // Dynamically generates and randomly shuffles cards
 function generateCards() {
 	let shuffledCards = shuffle(cardList);
-	for (card of shuffledCards) {
+	for (shuffledCard of shuffledCards) {
 		let li = document.createElement('li');
 		let i = document.createElement('i');
 		li.classList.add('card');
-		i.classList.add('fa', card)
+		i.classList.add('fa', shuffledCard);
 		li.appendChild(i);
 		deck.appendChild(li);
 	}
 }
 
-function toggleClasses(cardToToggle) {
+// Flip a card that got passed into it
+function toggleVisibility(cardToToggle) {
 	cardToToggle.classList.toggle('open');
 	cardToToggle.classList.toggle('show');
 }
 
-// card flips on click
-function flipCard() {
+// Cards listen to click events
+function initClick() {
 	deck.addEventListener('click', () => {
-		let flipTarget = event.target;
-		if (flipTarget.classList.contains('card') && openedCards.length < 2 && !openedCards.includes(flipTarget)) {
-			toggleClasses(flipTarget);
-			addOpenedCards(flipTarget);
+		let clickedCard = event.target;
+		if (
+			clickedCard.classList.contains('card') &&
+			openedCards.length < 2 &&
+			!openedCards.includes(clickedCard)
+		) {
+			toggleVisibility(clickedCard);
+			addOpenedCards(clickedCard);
 			if (openedCards.length === 2) {
 				checkMatching();
 			}
@@ -75,29 +80,34 @@ function flipCard() {
 	});
 }
 
-function addOpenedCards(flipTarget) {
-	openedCards.push(flipTarget);
+function addOpenedCards(clickedCard) {
+	openedCards.push(clickedCard);
 	console.log(openedCards);
 }
 
-// matched cards stays flipped
+// Matched cards stays flipped, unmatched cards flip back down
 function checkMatching() {
-	if (openedCards[0].firstElementChild.className === openedCards[1].firstElementChild.className) {
-		openedCards[0].classList.toggle('match');
-		openedCards[1].classList.toggle('match');
+	if (
+		openedCards[0].firstElementChild.className ===
+		openedCards[1].firstElementChild.className
+	) {
+		openedCards[0].classList.add('match');
+		openedCards[1].classList.add('match');
 		openedCards = [];
 		console.log('matched!');
 	} else {
-		toggleClasses(openedCards[0]);
-		toggleClasses(openedCards[1]);
-		openedCards = [];
-		console.log('not matched!');	
+		setTimeout(() => {
+			toggleVisibility(openedCards[0]);
+			toggleVisibility(openedCards[1]);
+			openedCards = [];
+			console.log('not matched!');
+		}, 600);
 	}
 }
 
 function startGame() {
 	generateCards();
-	flipCard();
+	initClick();
 }
 
 /*
