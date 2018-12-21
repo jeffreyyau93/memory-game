@@ -21,17 +21,20 @@ let cardList = [
 ];
 
 /*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
+* Display the cards on the page
+*   - shuffle the list of cards using the provided "shuffle" method below
+*   - loop through each card and create its HTML
+*   - add each card's HTML to the page
+*/
 let deck = document.getElementById('deck');
 
 let openedCards = [];
 
 let moves = 0;
+
 let movesText = document.querySelector('.moves');
+
+let starList = document.querySelectorAll('.stars li i');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -79,7 +82,8 @@ function initClick() {
 			addOpenedCards(clickedCard);
 			if (openedCards.length === 2) {
 				checkMatching();
-				moveCounter()
+				moveCounter();
+				starCounter()
 			}
 		}
 	});
@@ -110,11 +114,34 @@ function checkMatching() {
 	}
 }
 
-// Increment move counts
 function moveCounter() {
 	moves++;
 	movesText.innerHTML = moves;
 }
+
+// Removes 1 star from the counter after certain move counts
+function starCounter() {
+	if (
+		moves === 9 ||
+		moves === 11 ||
+		moves === 13 ||
+		moves === 15 ||
+		moves === 17 ||
+		moves === 19
+	) {
+		for (star of starList) {
+			if (!star.classList.contains('hide')) {
+				star.classList.add('hide');
+				break;
+			}
+		}
+	}
+}
+
+// function restartGame() {
+// 	moves = 0
+// 	generateCards();
+// }
 
 function startGame() {
 	generateCards();
@@ -133,5 +160,3 @@ function startGame() {
  */
 
 startGame();
-
-// set timer
