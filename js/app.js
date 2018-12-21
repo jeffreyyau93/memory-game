@@ -30,6 +30,9 @@ let deck = document.getElementById('deck');
 
 let openedCards = [];
 
+let moves = 0;
+let movesText = document.querySelector('.moves');
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
 	var currentIndex = array.length, temporaryValue, randomIndex;
@@ -76,6 +79,7 @@ function initClick() {
 			addOpenedCards(clickedCard);
 			if (openedCards.length === 2) {
 				checkMatching();
+				moveCounter()
 			}
 		}
 	});
@@ -104,6 +108,12 @@ function checkMatching() {
 			console.log('not matched!');
 		}, 600);
 	}
+}
+
+// Increment move counts
+function moveCounter() {
+	moves++;
+	movesText.innerHTML = moves;
 }
 
 function startGame() {
