@@ -145,6 +145,7 @@ function restartGame() {
 	restartButton.addEventListener('click', () => {
 		// reset deck
 		deck.innerHTML = '';
+		openedCards = [];
 		generateCards();
 		// reset move counter
 		moves = 0;
