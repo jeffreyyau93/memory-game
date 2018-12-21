@@ -68,6 +68,7 @@ function initClick() {
 		let clickedCard = event.target;
 		if (
 			clickedCard.classList.contains('card') &&
+			!clickedCard.classList.contains('match') &&
 			openedCards.length < 2 &&
 			!openedCards.includes(clickedCard)
 		) {
