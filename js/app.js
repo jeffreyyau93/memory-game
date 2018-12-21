@@ -36,6 +36,8 @@ let movesText = document.querySelector('.moves');
 
 let starList = document.querySelectorAll('.stars li i');
 
+let restartButton = document.querySelector('.restart');
+
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
 	var currentIndex = array.length, temporaryValue, randomIndex;
@@ -138,14 +140,26 @@ function starCounter() {
 	}
 }
 
-// function restartGame() {
-// 	moves = 0
-// 	generateCards();
-// }
+// Return the game to initial state
+function restartGame() {
+	restartButton.addEventListener('click', () => {
+		// reset deck
+		deck.innerHTML = '';
+		generateCards();
+		// reset move counter
+		moves = 0;
+		movesText.innerHTML = moves;
+		// reset star counter
+		for (star of starList) {
+			star.className = 'fa fa-star';
+		}
+	});
+}
 
 function startGame() {
 	generateCards();
 	initClick();
+	restartGame();
 }
 
 /*
