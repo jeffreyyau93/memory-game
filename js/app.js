@@ -36,6 +36,11 @@ let movesText = document.querySelector('.moves');
 
 let starList = document.querySelectorAll('.stars li i');
 
+let time = 0;
+let watchId;
+let watchOff = true;
+let watchText = document.querySelector('.stopwatch');
+
 let restartButton = document.querySelector('.restart');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -80,6 +85,10 @@ function initClick() {
 			openedCards.length < 2 &&
 			!openedCards.includes(clickedCard)
 		) {
+			if (watchOff) {
+				stopwatch();
+				watchOff = false;
+			}
 			toggleVisibility(clickedCard);
 			addOpenedCards(clickedCard);
 			if (openedCards.length === 2) {
@@ -140,6 +149,22 @@ function starCounter() {
 	}
 }
 
+function stopwatch() {
+	watchId = setInterval(() => {
+		time++;
+		watchValue()
+	}, 1000);
+}
+
+function watchValue() {
+	let minutes = Math.floor(time / 60);
+	let seconds = time % 60;
+	(minutes < 10 && seconds < 10) ? (watchText.innerText = `0${minutes}:0${seconds}`)
+	: (minutes < 10 && seconds >= 10) ? (watchText.innerText = `0${minutes}:${seconds}`)
+	: (minutes > 10 && seconds < 10) ? (watchText.innerText = `${minutes}:0${seconds}`)
+	: (watchText.innerText = `${minutes}:${seconds}`);
+}
+
 // Return the game to initial state
 function restartGame() {
 	restartButton.addEventListener('click', () => {
@@ -154,6 +179,11 @@ function restartGame() {
 		for (star of starList) {
 			star.className = 'fa fa-star';
 		}
+		// reset stopwatch
+		clearInterval(watchId);
+		time = 0;
+		watchOff = true;
+		watchValue();
 	});
 }
 
