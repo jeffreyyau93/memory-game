@@ -1,6 +1,3 @@
-/*
- * Create a list that holds all of your cards
- */
 let cardList = [
 	'fa-anchor',
 	'fa-anchor',
@@ -20,28 +17,18 @@ let cardList = [
 	'fa-paper-plane-o',
 ];
 
-/*
-* Display the cards on the page
-*   - shuffle the list of cards using the provided "shuffle" method below
-*   - loop through each card and create its HTML
-*   - add each card's HTML to the page
-*/
+// declare necessary global variavles
 let deck = document.getElementById('deck');
+let movesText = document.querySelector('.moves');
+let starList = document.querySelectorAll('.stars li i');
+let watchText = document.querySelector('.stopwatch');
 
 let openedCards = [];
 
 let moves = 0;
-
-let movesText = document.querySelector('.moves');
-
-let starList = document.querySelectorAll('.stars li i');
-
 let time = 0;
 let watchId;
 let watchOff = true;
-let watchText = document.querySelector('.stopwatch');
-
-let restartButton = document.querySelector('.restart');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -56,7 +43,7 @@ function shuffle(array) {
 	return array;
 }
 
-// Dynamically generates and randomly shuffles cards
+// dynamically generate and randomly shuffle cards
 function generateCards() {
 	let shuffledCards = shuffle(cardList);
 	for (shuffledCard of shuffledCards) {
@@ -69,29 +56,29 @@ function generateCards() {
 	}
 }
 
-// Flip a card that got passed into it
-function toggleVisibility(cardToToggle) {
+// flip a card up or down
+function toggleCard(cardToToggle) {
 	cardToToggle.classList.toggle('open');
 	cardToToggle.classList.toggle('show');
 }
 
-// Cards listen to click events
+// cards listen to click events
 function initClick() {
 	deck.addEventListener('click', () => {
 		let clickedCard = event.target;
-		if (
+		if ( // proceed if cards meet these conditions
 			clickedCard.classList.contains('card') &&
-			!clickedCard.classList.contains('match') &&
-			openedCards.length < 2 &&
-			!openedCards.includes(clickedCard)
+			!clickedCard.classList.contains('match') && // make matched cards unclickable
+			openedCards.length < 2 && // open two card at most in one turn
+			!openedCards.includes(clickedCard) // prevent clicking on the same card
 		) {
-			if (watchOff) {
+			if (watchOff) { // initialize stopwatch
 				stopwatch();
 				watchOff = false;
 			}
-			toggleVisibility(clickedCard);
-			addOpenedCards(clickedCard);
-			if (openedCards.length === 2) {
+			toggleCard(clickedCard);
+			openedCards.push(clickedCard);
+			if (openedCards.length === 2) { // check for these stats when two cards are flipped
 				checkMatching();
 				moveCounter();
 				starCounter()
@@ -100,12 +87,7 @@ function initClick() {
 	});
 }
 
-function addOpenedCards(clickedCard) {
-	openedCards.push(clickedCard);
-	console.log(openedCards);
-}
-
-// Matched cards stays flipped, unmatched cards flip back down
+// matched cards stay flipped, unmatched cards flip back down
 function checkMatching() {
 	if (
 		openedCards[0].firstElementChild.className ===
@@ -114,23 +96,21 @@ function checkMatching() {
 		openedCards[0].classList.add('match');
 		openedCards[1].classList.add('match');
 		openedCards = [];
-		console.log('matched!');
 	} else {
 		setTimeout(() => {
-			toggleVisibility(openedCards[0]);
-			toggleVisibility(openedCards[1]);
+			toggleCard(openedCards[0]);
+			toggleCard(openedCards[1]);
 			openedCards = [];
-			console.log('not matched!');
 		}, 600);
 	}
 }
 
 function moveCounter() {
 	moves++;
-	movesText.innerHTML = moves;
+	movesText.innerText = moves;
 }
 
-// Removes 1 star from the counter after certain move counts
+// remove one star from the counter after certain move counts
 function starCounter() {
 	if (
 		moves === 9 ||
@@ -165,26 +145,29 @@ function watchValue() {
 	: (watchText.innerText = `${minutes}:${seconds}`);
 }
 
-// Return the game to initial state
+// return the game to initial state
+function resetGameState() {
+	// reset game board
+	deck.innerHTML = '';
+	openedCards = [];
+	generateCards();
+	// reset move counter
+	moves = 0;
+	movesText.innerText = moves;
+	// reset star counter
+	for (star of starList) {
+		star.className = 'fa fa-star';
+	}
+	// reset stopwatch
+	clearInterval(watchId);
+	time = 0;
+	watchOff = true;
+	watchValue();
+}
+
 function restartGame() {
-	restartButton.addEventListener('click', () => {
-		// reset deck
-		deck.innerHTML = '';
-		openedCards = [];
-		generateCards();
-		// reset move counter
-		moves = 0;
-		movesText.innerHTML = moves;
-		// reset star counter
-		for (star of starList) {
-			star.className = 'fa fa-star';
-		}
-		// reset stopwatch
-		clearInterval(watchId);
-		time = 0;
-		watchOff = true;
-		watchValue();
-	});
+	let restartButton = document.querySelector('.restart');
+	restartButton.addEventListener('click', resetGameState);
 }
 
 function startGame() {
@@ -192,16 +175,5 @@ function startGame() {
 	initClick();
 	restartGame();
 }
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
 
 startGame();

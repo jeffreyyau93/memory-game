@@ -81,6 +81,10 @@ h1 {
 	font-size: 33px;
 }
 
+.hide {
+	display: none;
+}
+
 /*
  * Styles for the Score Panel
  */
@@ -101,10 +105,6 @@ h1 {
 .score-panel .stars li {
 	list-style: none;
 	display: inline-block;
-}
-
-.score-panel .stars li i.hide {
-	display: none;
 }
 
 .score-panel .restart {
