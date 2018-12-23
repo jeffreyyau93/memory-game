@@ -120,11 +120,9 @@ function moveCounter() {
 // remove one star from the counter after certain move counts
 function starCounter() {
 	if (
-		moves === 9 ||
-		moves === 11 ||
+		moves === 10 ||
 		moves === 13 ||
-		moves === 15 ||
-		moves === 17 ||
+		moves === 16 ||
 		moves === 19
 	) {
 		for (star of starList) {
@@ -170,7 +168,7 @@ function resetGameState() {
 	time = 0;
 	watchOff = true;
 	watchValue();
-	// reset match counts
+	// reset match count
 	matches = 0;
 }
 
