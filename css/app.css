@@ -111,3 +111,69 @@ h1 {
 	float: right;
 	cursor: pointer;
 }
+
+/*
+ * Styles for the Game Modal
+ */
+
+.modal-background {
+	background: #0008;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 100%;
+	width: 100%;
+}
+
+.modal-content {
+	background: white;
+	left: 50%;
+	top: 50%;
+	position: relative;
+	transform: translate(-50%, -70%);
+	width: 75vmin;
+}
+
+.modal-header {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	padding: 4vmin;
+}
+
+.modal-header-text {
+	margin: auto;
+}
+
+.modal-result {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	padding: 4vmin 4vmin 0;
+}
+
+.modal-result-text {
+	margin: auto;
+}
+
+.modal-stats {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
+	padding: 4vmin;
+}
+
+.modal-stat {
+	margin: 1vmin;
+}
+
+.modal-buttons {
+	display: flex;
+	justify-content: space-around;
+	padding: 0 4vmin 4vmin;
+}
+
+.modal-button-replay {
+	height: 40px;
+	width: 100px;
+}
