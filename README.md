@@ -9,6 +9,6 @@ This project takes the template provided by Udacity as starting point. I don't o
 
 Link for the template repository: https://github.com/udacity/fend-project-memory-game
 ## Contributing
-This is a personal project for a online learning program, so I'll not accept any pull request.
+This is a personal project for an online learning program, so I'll not accept any pull request.
 ## License
 License won't be available.
